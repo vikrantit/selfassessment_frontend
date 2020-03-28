@@ -7,17 +7,32 @@ const SearchAllreports = () =>{
   const [token, setToken]= useState('ss');
   const [data,setData]= useState([]);
   const [listError, setListError] = useState(false);
+  const [localtoken, setLocaltoken]= useState('');
+  const[message, setMessage]= useState("Loading");
   
   useEffect( ()=> {
+    
+
     const fetchdata= async () => {
-      axios.get('/listallreports' ,{ headers: {'x-auth-token' :"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4MTg2NzY5MjRjODZhMmNiYTAyYjUiLCJmaXJzdG5hbWUiOiJTdWJoIiwiaWF0IjoxNTg0OTg0NjkzfQ.xtms8es4kDYMSXvR8_4AyPU0D_xXvZ3wxG16GGbylx0",
+      const jwt= localStorage.getItem("token");
+      
+
+      if(jwt == undefined){
+        setMessage("Not Authorised");
+      }
+
+      await axios.get('/listallreports' ,{ headers: {'x-auth-token' :jwt,
       'Accept' : 'application/json',
       'Content-Type': 'application/json'
        }})
        .then( res=> {
          setData(res.data);
+         
+          
+         
        })
        .catch((err)=> {
+         
          setListError(true);
        })
     };
@@ -25,30 +40,11 @@ const SearchAllreports = () =>{
     fetchdata();
   }, []);
 
-  const handleSubmit = async (e) => {
-  await axios.get('/listallreports', { headers: {'x-auth-token' :"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4MTg2NzY5MjRjODZhMmNiYTAyYjUiLCJmaXJzdG5hbWUiOiJTdWJoIiwiaWF0IjoxNTg0OTg0NjkzfQ.xtms8es4kDYMSXvR8_4AyPU0D_xXvZ3wxG16GGbylx0",
-  'Accept' : 'application/json',
-  'Content-Type': 'application/json'
-   }})
-  .then(function (response) {
-    // handle success
-    console.log(response);
-    setToken("Done");
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });
-}
+ 
   return (
 
     <div>
       
-
-
       { data.length !== 0
         ? <div className="p-3">
           <table className="table">
@@ -77,7 +73,7 @@ const SearchAllreports = () =>{
      </table>
           
         </div>
-        : < div> <p> Loading...</p></div>
+        : < div> <p> {message}...</p></div>
       }
 
      

@@ -1,28 +1,58 @@
-import React,{Component} from 'react';
+import React,{ useState, useEffect} from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
-import Login from './components/login';
+import jwtDecode from 'jwt-decode';
+
 import Registration from './components/registration';
 import ReportNurse from './components/reportnurse';
 import SearchAllreports from './components/searchallreports';
 import SearchbyEmail from './components/searchbyemail';
-import SearchAllreports2 from './components/searchbyemail2';
+import Login from './components/login';
 import Navbar from "./components/navbar";
-import movie from './components/movie';
+import Profile from "./components/profile";
+import Logout from "./components/logout";
+import ReportUser from "./components/reportuser";
+import Emergency from "./components/emergency";
+import Addtips from "./components/addtips";
+
 
 function App() {
+
+
+  const [user, setUser] = useState('');
+
+  useEffect( ()=> {
+
+    try{
+    const jwt= localStorage.getItem("token");
+    const user= jwtDecode(jwt);
+    console.log("user is here", user);
+    console.log("role from app.js is here", user.role);
+    setUser( {user});
+    //console.log(user);
+
+    }
+    catch(ex){
+
+    }
+  },[]);
+  
   return (
     <React.Fragment>
       
-      <Navbar />
+      <Navbar u={user}/>
         <div className="container">
           
         <Switch>
           <Route path="/login" component={Login}></Route>
+          <Route path="/logout" component={Logout}></Route>
+          <Route path="/profile" component={Profile}></Route>
           <Route path="/registration" component={Registration}></Route>
           <Route path="/reportnurse" component={ReportNurse}></Route>
           <Route path="/searchallreports" component={SearchAllreports}></Route>
           <Route path="/searchbyemail" component={SearchbyEmail}></Route>
-          <Route path="/searchbyemail2" component={SearchAllreports2}></Route>
+          <Route path="/reportuser" component={ReportUser}></Route>
+          <Route path="/emergency" component={Emergency}></Route>
+          <Route path="/addTips" component={Addtips}></Route>
           <Redirect from="/" to="/login" />
           <Redirect to="" />
         </Switch>

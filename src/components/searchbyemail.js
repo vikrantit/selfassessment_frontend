@@ -2,37 +2,32 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const SearchbyEmail = () => {
-  const [token, setToken] = useState(null);
   const [report, setReport] = useState({ patientemail: "" });
   //modified part
   const [idfrombutton, setidfrombutton] = useState('');
   const [data, setData] = useState([]);
   const [listError, setListError] = useState(false);
   const [cookie, setCookie] = useState('');
+  const[message, setMessage]= useState("");
+
+ 
 
   useEffect(() => {
-    const fetchCookie = async () => {
-      const cookieurl= await axios
-        .get("/read_cookie")
-        .then(res => {
-          setCookie(res.data);
-
-        })
-        .catch(err => {
-          setListError(true);
-        });
-    };
-
-    fetchCookie();
-  }, []);
-
-  useEffect(() => {
+    
     const fetchdata = async () => {
+
+      const jwt= localStorage.getItem("token");
+      
+
+      if(jwt == undefined){
+        setMessage("Not Authorised");
+      }
+
       await axios
         .post("/listbyemail", report, {
           headers: {
             "x-auth-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4MTg2NzY5MjRjODZhMmNiYTAyYjUiLCJmaXJzdG5hbWUiOiJTdWJoIiwiaWF0IjoxNTg0OTg0NjkzfQ.xtms8es4kDYMSXvR8_4AyPU0D_xXvZ3wxG16GGbylx0",
+              jwt,
             Accept: "application/json",
             "Content-Type": "application/json"
           }
@@ -61,7 +56,7 @@ const SearchbyEmail = () => {
 }
 
   return (
-    <div>
+    <div className="App">
       
             <input
               type="text"
@@ -107,7 +102,7 @@ const SearchbyEmail = () => {
       ) : (
         <div className="d-flex justify-content-center p-3 ">
           {" "}
-          <p>You need to Login First</p>
+          <p>{message}...</p>
         </div>
       )}
     </div>

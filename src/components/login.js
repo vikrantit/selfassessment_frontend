@@ -1,54 +1,77 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
+
 import axios from 'axios';
-
-
-const Login = () =>{
-
-  const [screen, setScreen]= useState('auth');
-  const [email, setEmail]= useState();
-  const [password, setPassword]= useState();
-  const [token, setToken]= useState('ss');
-  const [button, setButton]= useState('');
-  const apiUrl= "http://localhost:5000/login";
-
-
-  const [login, setLogin] =useState( {email:'', password: ''});
+//
+function Login() {
+  //state variable for the screen, admin or user
+  const [screen, setScreen] = useState('auth');
   
+  //store input field data, user name and password
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [user, setUser] = useState('');
+  const apiUrl = "http://localhost:5000/login";
 
-  const handleChange = (event) => {
-    setLogin({...login, [event.target.name]: event.target.value})
-  }
+  useEffect( ()=> {
+    try{
+    const jwt= localStorage.getItem("token");
+    const user= jwtDecode(jwt);
+    setUser( {user});
+    console.log("user afted logged in", user);
 
-const handleSubmit = (e) => {
-  e.preventDefault()
-  axios.post(apiUrl, login)
-    .then(function (response) {
-      setToken(response.data.token)
-        console.log(response)
-    })
-    .catch(function (error) {
-        console.log(error)
-    }) 
-  }
+    }
+    catch(ex){
 
-    return (
-
-      <div>
-    
-        <form className='white' onSubmit={handleSubmit}>
-        <input type="text" name="email" value={login.email} onChange={handleChange} required />
-        <input type="text" name="password" value={login.password} onChange={handleChange} required />
-
-        <div className="input-field"> 
-                    <button className="btn blue darken-3" type="submit">Login</button>
-                </div>
-        </form>
-
-        {token}
-        
-    </div> 
-    )
-
+    }
+  },[]);
+  //send username and password to the server
+  // for initial authentication
+  const auth = async () => {
+    console.log('calling auth')
+    console.log(username)
+    console.log(password)
+    try {
+      
+      const loginData = { username, password  }
+      const res = await axios.post(apiUrl, loginData);
+      //process the response
+      if (res.data.screen !== undefined) {
+        localStorage.setItem('token', res.headers['x-auth-token']);
+        setScreen(res.data.screen);
+        setUser(res.data.user);
+        console.log(res.data.screen);
+        window.location="/";
+      }
+    } catch (e) { //print the error
+      console.log(e);
+    }
+  
+  };
+  
+  //
+  return (
+    <div className="App">
+      { user=== ''
+        ? <div>
+          <label>Username: </label>
+          <br/>
+          <input type="text" onChange={e => setUsername(e.target.value)} />
+          <br/>
+          <label>Password: </label>
+          <br/>
+          <input type="password" onChange={e => setPassword(e.target.value)} />
+          <br/>
+          <button onClick={auth}>Login</button>
+        </div>
+        : <div><h1>Welcome  </h1> 
+          <p>How are you feeling today?</p>
+          </div>
+        //<View screen={screen} setScreen={setScreen} />
+      }
+    </div>
+  );
 }
 
 export default Login;
+

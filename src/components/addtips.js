@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Registration= () => {
+const Addtips= () => {
 
   const [registeruser, setRegisteruser] = useState( {firstName: '', lastName: '', email: '', password: '', confirmpassword: ''})
 
@@ -45,4 +45,4 @@ const Registration= () => {
 }
 
 
-export default Registration;
+export default Addtips;
