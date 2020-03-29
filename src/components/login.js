@@ -15,12 +15,22 @@ function Login() {
 
   useEffect( ()=> {
     try{
+    let hours= 0.05;
     const jwt= localStorage.getItem("token");
+    const time= localStorage.getItem('time');
+
+    if(jwt && (new Date().getTime() - time> hours * 60 * 60 *1000 )){
+      console.log( "localstorage", new Date().getTime() - time> hours * 60 * 60 *1000 );
+      localStorage.clear();
+    }
+    else{
+    
     const user= jwtDecode(jwt);
     setUser( {user});
     console.log("user afted logged in", user);
 
     }
+  }
     catch(ex){
 
     }
@@ -38,6 +48,7 @@ function Login() {
       //process the response
       if (res.data.screen !== undefined) {
         localStorage.setItem('token', res.headers['x-auth-token']);
+        localStorage.setItem('time', new Date().getTime());
         setScreen(res.data.screen);
         setUser(res.data.user);
         console.log(res.data.screen);
@@ -64,7 +75,7 @@ function Login() {
           <br/>
           <button onClick={auth}>Login</button>
         </div>
-        : <div><h1>Welcome  </h1> 
+        : <div><h1>Welcome {user.user.role} </h1> 
           <p>How are you feeling today?</p>
           </div>
         //<View screen={screen} setScreen={setScreen} />

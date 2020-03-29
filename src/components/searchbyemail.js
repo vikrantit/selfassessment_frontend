@@ -17,11 +17,23 @@ const SearchbyEmail = () => {
     const fetchdata = async () => {
 
       const jwt= localStorage.getItem("token");
+      const time= localStorage.getItem("time");
+      let hours= 0.05 ;
       
 
       if(jwt == undefined){
         setMessage("Not Authorised");
       }
+      if(time && (new Date().getTime() - time > hours * 60 * 60 *1000 )){
+        console.log( "localstorage from searchbyemail true", new Date().getTime() - time> hours * 60 * 60 *1000 );
+        localStorage.removeItem('token');
+        localStorage.removeItem('time');
+        window.location="/";
+      }
+      else{
+        console.log( "localstorage from searchbyemail false", new Date().getTime() - time> hours * 60 * 60 *1000 );
+        
+      
 
       await axios
         .post("/listbyemail", report, {
@@ -39,6 +51,8 @@ const SearchbyEmail = () => {
           setListError(true);
         });
     };
+
+  }
 
     fetchdata();
   }, [idfrombutton]);

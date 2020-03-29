@@ -1,6 +1,7 @@
 import React,{ useState, useEffect} from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 import Registration from './components/registration';
 import ReportNurse from './components/reportnurse';
@@ -19,8 +20,19 @@ function App() {
 
 
   const [user, setUser] = useState('');
+  const [message,setMessage]= useState('');
 
   useEffect( ()=> {
+
+    const fetchdata= async () => {
+      await axios.get('/getTips')
+      .then( res=> {
+        setMessage(res.data);
+      })
+      .catch( (err)=>{
+
+      })
+    }
 
     try{
     const jwt= localStorage.getItem("token");
@@ -30,18 +42,23 @@ function App() {
     setUser( {user});
     //console.log(user);
 
+
+
+
     }
     catch(ex){
 
     }
+    fetchdata();
   },[]);
   
   return (
     <React.Fragment>
       
       <Navbar u={user}/>
+      <p><i><marquee>Tips of the Day: {message}</marquee> </i></p>
         <div className="container">
-          
+        
         <Switch>
           <Route path="/login" component={Login}></Route>
           <Route path="/logout" component={Logout}></Route>

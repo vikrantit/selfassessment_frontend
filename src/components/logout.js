@@ -5,6 +5,7 @@ const Logout= () => {
   useEffect( ()=> {
     try{
     const jwt= localStorage.removeItem("token");
+    const time= localStorage.removeItem("time");  
     
     console.log("user afted logged out");
     window.location="/";
