@@ -35,7 +35,7 @@ const Registration = () => {
   };
 
   return (
-    <div>
+    <div className= "d-flex justify-content-center">
       <Form onSubmit={handleSubmit}> 
         <Form.Group controlId="formBasicEmail">
           <Form.Label>First Name</Form.Label>

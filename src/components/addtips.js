@@ -1,48 +1,111 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-const Addtips= () => {
+const Addtips = () => {
+  const [tips, setTip] = useState( {
+    tip: ""
+  });
+  const [message, setMessage] = useState(null);
+  const [user, setUser] = useState("");
+  const [submit, setSubmit] = useState(null);
 
-  const [registeruser, setRegisteruser] = useState( {firstName: '', lastName: '', email: '', password: '', confirmpassword: ''})
+  useEffect(() => {
+    const fetchdata = async () => {
+      let hours = 0.05;
+      const jwt = localStorage.getItem("token");
+      const time = localStorage.getItem("time");
 
+      if (jwt == undefined) {
+        setMessage("Not Authorised");
+      }
 
+      if (time && new Date().getTime() - time > hours * 60 * 60 * 1000) {
+        console.log(
+          "localstorage for true",
+          new Date().getTime() - time > hours * 60 * 60 * 1000
+        );
+        localStorage.removeItem("token");
+        localStorage.removeItem("time");
+        window.location = "/";
+      } else {
+        setUser(jwt);
+        console.log(
+          "localstorage for false",
+          new Date().getTime() - time > hours * 60 * 60 * 1000
+        );
+      }
+    };
 
-  const handleChange = (event) => {
-    setRegisteruser({...registeruser, [event.target.name]: event.target.value})
-}
+    fetchdata();
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('/register', registeruser)
-      .then(function (response) {
-          console.log(response)
-          localStorage.setItem('token', response.headers['x-auth-token'])
-          window.location="/";
+  const handleChange = event => {
+    setTip({ ...tips, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    axios
+      .post("/addTips", tips, {
+        headers: {
+          "x-auth-token": user,
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
       })
-      .catch(function (error) {
-          console.log(error)
-      }) 
-    }
+      .then(function(response) {
+        console.log(response);
+        setMessage("Submmited");
+        setSubmit(true);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+  const submitAnother = e => {
+    setMessage(null);
+    setSubmit(null);
+    setTip( { tip: ""})
+  };
 
   return (
-
     <div>
-  
-      <form className='white' onSubmit={handleSubmit}>
-      <input type="text" name="firstName" value={registeruser.firstName} onChange={handleChange} required />
-      <input type="text" name="lastName" value={registeruser.lastName} onChange={handleChange} required />
-      <input type="text" name="email" value={registeruser.email} onChange={handleChange} required />
-      <input type="text" name="password" value={registeruser.password} onChange={handleChange} required />
-      <input type="text" name="confirmpassword" value={registeruser.confirmpassword} onChange={handleChange} required />
+      {message === null && submit === null ? (
+        <div>
+          <div className="d-flex p-4">
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Tip</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="tip"
+                  placeholder="tip"
+                  value={tips.tip}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-      <div className="input-field"> 
-       <button className="btn blue darken-3" type="submit">Sign Up</button>
-       </div>
-      </form>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </div>
+        </div>
+      ) : (
+        <div className="d-flex p-4">
+          <Form onSubmit={submitAnother}>
+            <p> {message}...</p>
+            <Button variant="primary" type="submit">
+              Submit Another
+            </Button>
+          </Form>
+        </div>
+      )}
       
-  </div> 
-  )
-}
-
+    </div>
+  );
+};
 
 export default Addtips;

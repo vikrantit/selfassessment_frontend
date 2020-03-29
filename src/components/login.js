@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Jumbotron from 'react-bootstrap/Jumbotron'
 //
 function Login() {
   //state variable for the screen, admin or user
@@ -74,7 +75,7 @@ function Login() {
       
     
       { user=== ''
-        ? <div>
+        ? <div className="d-flex justify-content-center">
           <Form>
   <Form.Group controlId="formBasicEmail">
     <Form.Label>Email address</Form.Label>
@@ -88,18 +89,29 @@ function Login() {
     <Form.Label>Password</Form.Label>
     <Form.Control type="password" placeholder="Password"  onChange={e => setPassword(e.target.value)}/>
   </Form.Group>
-  <Form.Group controlId="formBasicCheckbox">
-    <Form.Check type="checkbox" label="Check me out" />
-  </Form.Group>
-  <Button variant="primary" type="submit" onClick={auth}>
+  
+  <Button variant="primary"  type="submit" onClick={auth}>
     Login
   </Button>
 </Form>
 
         </div>
-        : <div><h1>
+        : <div>
+          <Jumbotron>
+  <h1>Hello, world!</h1>
+  <h1>
            Welcome {user.user.firstName} </h1> 
           <p>How are you feeling today?</p>
+  <p>
+    This is a simple hero unit, a simple jumbotron-style component for calling
+    extra attention to featured content or information.
+  </p>
+  <p>
+    <Button variant="primary">Learn more</Button>
+  </p>
+</Jumbotron>
+          
+          
           </div>
         //<View screen={screen} setScreen={setScreen} />
       }
