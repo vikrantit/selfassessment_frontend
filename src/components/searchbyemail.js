@@ -52,6 +52,10 @@ const SearchbyEmail = () => {
         });
     };
 
+    return ()=> {
+      fetchdata();
+    }
+
   }
 
     fetchdata();

@@ -1,48 +1,84 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-const Registration= () => {
+const Registration = () => {
+  const [registeruser, setRegisteruser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmpassword: ""
+  });
 
-  const [registeruser, setRegisteruser] = useState( {firstName: '', lastName: '', email: '', password: '', confirmpassword: ''})
+  const handleChange = event => {
+    setRegisteruser({
+      ...registeruser,
+      [event.target.name]: event.target.value
+    });
+  };
 
-
-
-  const handleChange = (event) => {
-    setRegisteruser({...registeruser, [event.target.name]: event.target.value})
-}
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('/register', registeruser)
-      .then(function (response) {
-          console.log(response)
-          localStorage.setItem('token', response.headers['x-auth-token'])
-          window.location="/";
+  const handleSubmit = e => {
+    e.preventDefault();
+    axios
+      .post("/register", registeruser)
+      .then(function(response) {
+        console.log(response);
+        localStorage.setItem("token", response.headers["x-auth-token"]);
+        localStorage.setItem('time', new Date().getTime());
+        window.location = "/";
       })
-      .catch(function (error) {
-          console.log(error)
-      }) 
-    }
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
 
   return (
-
     <div>
-  
-      <form className='white' onSubmit={handleSubmit}>
-      <input type="text" name="firstName" value={registeruser.firstName} onChange={handleChange} required />
-      <input type="text" name="lastName" value={registeruser.lastName} onChange={handleChange} required />
-      <input type="text" name="email" value={registeruser.email} onChange={handleChange} required />
-      <input type="text" name="password" value={registeruser.password} onChange={handleChange} required />
-      <input type="text" name="confirmpassword" value={registeruser.confirmpassword} onChange={handleChange} required />
+      <Form onSubmit={handleSubmit}> 
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control type="text" name="firstName" placeholder="Enter first name"  value={registeruser.firstName}
+          onChange={handleChange} />
+          
+        </Form.Group>
 
-      <div className="input-field"> 
-       <button className="btn blue darken-3" type="submit">Sign Up</button>
-       </div>
-      </form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control type="text"  name="lastName" placeholder="Enter last name"  value={registeruser.lastName}
+          onChange={handleChange} />
+          
+        </Form.Group>
+
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" name="email" placeholder="Enter email"  value={registeruser.email}
+          onChange={handleChange} />
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" name="password" placeholder="Password" value={registeruser.password}
+          onChange={handleChange} />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control type="password" name="confirmpassword" placeholder="Confirm Password" value={registeruser.confirmpassword}
+          onChange={handleChange} />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+
       
-  </div> 
-  )
-}
-
+    </div>
+  );
+};
 
 export default Registration;

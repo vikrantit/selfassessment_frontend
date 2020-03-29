@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import axios from 'axios';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 //
 function Login() {
   //state variable for the screen, admin or user
   const [screen, setScreen] = useState('auth');
+
+  //for carousel
+  const [index, setIndex] = useState(0);
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
   
   //store input field data, user name and password
   const [username, setUsername] = useState();
@@ -34,7 +42,7 @@ function Login() {
     catch(ex){
 
     }
-  },[]);
+  },[screen]);
   //send username and password to the server
   // for initial authentication
   const auth = async () => {
@@ -49,9 +57,9 @@ function Login() {
       if (res.data.screen !== undefined) {
         localStorage.setItem('token', res.headers['x-auth-token']);
         localStorage.setItem('time', new Date().getTime());
-        setScreen(res.data.screen);
+        setScreen("notauth");
         setUser(res.data.user);
-        console.log(res.data.screen);
+        
         window.location="/";
       }
     } catch (e) { //print the error
@@ -62,20 +70,35 @@ function Login() {
   
   //
   return (
-    <div className="App">
+    <div >
+      
+    
       { user=== ''
         ? <div>
-          <label>Username: </label>
-          <br/>
-          <input type="text" onChange={e => setUsername(e.target.value)} />
-          <br/>
-          <label>Password: </label>
-          <br/>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-          <br/>
-          <button onClick={auth}>Login</button>
+          <Form>
+  <Form.Group controlId="formBasicEmail">
+    <Form.Label>Email address</Form.Label>
+    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} />
+    <Form.Text className="text-muted">
+      We'll never share your email with anyone else.
+    </Form.Text>
+  </Form.Group>
+
+  <Form.Group controlId="formBasicPassword">
+    <Form.Label>Password</Form.Label>
+    <Form.Control type="password" placeholder="Password"  onChange={e => setPassword(e.target.value)}/>
+  </Form.Group>
+  <Form.Group controlId="formBasicCheckbox">
+    <Form.Check type="checkbox" label="Check me out" />
+  </Form.Group>
+  <Button variant="primary" type="submit" onClick={auth}>
+    Login
+  </Button>
+</Form>
+
         </div>
-        : <div><h1>Welcome {user.user.role} </h1> 
+        : <div><h1>
+           Welcome {user.user.firstName} </h1> 
           <p>How are you feeling today?</p>
           </div>
         //<View screen={screen} setScreen={setScreen} />

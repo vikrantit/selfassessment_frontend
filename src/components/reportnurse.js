@@ -5,6 +5,36 @@ import axios from 'axios';
 
 const ReportNurse = () =>{
 
+  const[message, setMessage]= useState(null);
+
+  useEffect( ()=> {
+    
+
+    const fetchdata= async () => {
+
+      let hours= 0.05;
+      const jwt= localStorage.getItem("token");
+      const time= localStorage.getItem("time");
+
+      if(jwt == undefined){
+        setMessage("Not Authorised");
+      }
+
+      if(time && (new Date().getTime() - time > hours * 60 * 60 *1000 )){
+        console.log( "localstorage for true", new Date().getTime() - time> hours * 60 * 60 *1000 );
+        localStorage.removeItem('token');
+        localStorage.removeItem('time');
+        window.location="/";
+      }
+      else{
+        console.log( "localstorage for false", new Date().getTime() - time> hours * 60 * 60 *1000 );
+
+      }
+    }
+
+    fetchdata();
+  },[]);
+
   
 const apiUrl= "http://localhost:5000/reportnurse";
 const [token, setToken]= useState('ss');
@@ -34,7 +64,9 @@ const [token, setToken]= useState('ss');
   return (
 
     <div>
-  
+       { message===null
+       ?
+       <div>
       <form className='white' onSubmit={handleSubmit}>
       <input type="text" name="patientid" value={report.patientid} onChange={handleChange} required />
       <input type="text" name="patientemail" value={report.patientemail} onChange={handleChange} required />
@@ -46,7 +78,9 @@ const [token, setToken]= useState('ss');
          <button className="btn blue darken-3" type="submit">Add Report</button>
       </div>
       </form>
-   
+      </div>
+      : < div> <p> {message}...</p></div>
+    }
       
       
   </div> 
