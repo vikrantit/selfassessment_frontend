@@ -45,7 +45,7 @@ const NavBar = ({ u }) => {
             </React.Fragment>
           )}
 
-          {u && u.user.role == "Nurse" && (
+          {u && u.user.role === "Nurse" && (
             <React.Fragment>
               <NavLink className="nav-item nav-link" to="/reportnurse">
                 Add Report
@@ -62,7 +62,7 @@ const NavBar = ({ u }) => {
               </NavLink>
             </React.Fragment>
           )}
-          {u && u.user.role == "Patient" && (
+          {u && u.user.role === "Patient" && (
             <React.Fragment>
               <NavLink className="nav-item nav-link" to="/reportuser">
                 Add Report

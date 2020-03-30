@@ -14,7 +14,6 @@ import Logout from "./components/logout";
 import ReportUser from "./components/reportuser";
 import Emergency from "./components/emergency";
 import Addtips from "./components/addtips";
-import Carousel from 'react-bootstrap/Carousel'
 import Carousel1 from './components/carousel';
 import Footer from './components/footer';
 
@@ -23,11 +22,7 @@ import Footer from './components/footer';
 function App() {
 
 
-   //for carousel
-   const [index, setIndex] = useState(0);
-   const handleSelect = (selectedIndex, e) => {
-     setIndex(selectedIndex);
-   };
+   
 
   const [user, setUser] = useState('');
   const [message,setMessage]= useState('');

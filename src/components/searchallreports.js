@@ -1,13 +1,12 @@
 import React, { useState,useEffect } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
 import axios from 'axios';
 
 const SearchAllreports = () =>{
 
-  const [token, setToken]= useState('ss');
+  
   const [data,setData]= useState([]);
-  const [listError, setListError] = useState(false);
-  const [localtoken, setLocaltoken]= useState('');
+ 
+  
   const[message, setMessage]= useState("Loading");
   
   useEffect( ()=> {
@@ -20,7 +19,7 @@ const SearchAllreports = () =>{
       const time= localStorage.getItem("time");
 
       
-      if(jwt == undefined){
+      if(jwt === undefined){
         setMessage("Not Authorised");
       }
 
@@ -48,7 +47,7 @@ const SearchAllreports = () =>{
        })
        .catch((err)=> {
          
-         setListError(true);
+         
        })
     };
   }

@@ -3,7 +3,6 @@ import axios from "axios";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import jwtDecode from "jwt-decode";
 
 const ReportNurse = () => {
   const [message, setMessage] = useState(null);
@@ -16,7 +15,7 @@ const ReportNurse = () => {
       const jwt = localStorage.getItem("token");
       const time = localStorage.getItem("time");
 
-      if (jwt == undefined) {
+      if (jwt === undefined) {
         setMessage("Not Authorised");
       }
 
@@ -29,7 +28,6 @@ const ReportNurse = () => {
         localStorage.removeItem("time");
         window.location = "/";
       } else {
-        const user = jwtDecode(jwt);
         setUser(jwt);
         console.log(
           "localstorage for false",
@@ -41,9 +39,8 @@ const ReportNurse = () => {
     fetchdata();
   }, []);
 
-  const apiUrl = "http://localhost:5000/reportnurse";
-  const [token, setToken] = useState("ss");
-
+  
+  
   const [report, setReport] = useState({
     patientid: "",
     patientemail: "",
@@ -68,7 +65,7 @@ const ReportNurse = () => {
         }
       })
       .then(function(response) {
-        setToken(response.data);
+       
         setMessage("Submmited");
         setSubmit(true);
         console.log(response.data.date);

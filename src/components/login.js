@@ -10,11 +10,6 @@ function Login() {
   //state variable for the screen, admin or user
   const [screen, setScreen] = useState('auth');
 
-  //for carousel
-  const [index, setIndex] = useState(0);
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
   
   //store input field data, user name and password
   const [username, setUsername] = useState();
@@ -80,9 +75,7 @@ function Login() {
   <Form.Group controlId="formBasicEmail">
     <Form.Label>Email address</Form.Label>
     <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} />
-    <Form.Text className="text-muted">
-      We'll never share your email with anyone else.
-    </Form.Text>
+    
   </Form.Group>
 
   <Form.Group controlId="formBasicPassword">
@@ -107,7 +100,9 @@ function Login() {
     extra attention to featured content or information.
   </p>
   <p>
-    <Button variant="primary">Learn more</Button>
+    <form>
+    <Button variant="primary" onClick={{}}>Learn more</Button>
+    </form>
   </p>
 </Jumbotron>
           

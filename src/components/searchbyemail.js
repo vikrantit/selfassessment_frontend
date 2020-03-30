@@ -1,62 +1,58 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Form from "react-bootstrap/Form";
 
 const SearchbyEmail = () => {
   const [report, setReport] = useState({ patientemail: "" });
   //modified part
-  const [idfrombutton, setidfrombutton] = useState('');
+  const [idfrombutton, setidfrombutton] = useState("");
   const [data, setData] = useState([]);
-  const [listError, setListError] = useState(false);
-  const [cookie, setCookie] = useState('');
-  const[message, setMessage]= useState("");
-
- 
+  
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    
     const fetchdata = async () => {
+      const jwt = localStorage.getItem("token");
+      const time = localStorage.getItem("time");
+      let hours = 0.05;
 
-      const jwt= localStorage.getItem("token");
-      const time= localStorage.getItem("time");
-      let hours= 0.05 ;
-      
-
-      if(jwt == undefined){
+      if (jwt === undefined) {
         setMessage("Not Authorised");
       }
-      if(time && (new Date().getTime() - time > hours * 60 * 60 *1000 )){
-        console.log( "localstorage from searchbyemail true", new Date().getTime() - time> hours * 60 * 60 *1000 );
-        localStorage.removeItem('token');
-        localStorage.removeItem('time');
-        window.location="/";
+      if (time && new Date().getTime() - time > hours * 60 * 60 * 1000) {
+        console.log(
+          "localstorage from searchbyemail true",
+          new Date().getTime() - time > hours * 60 * 60 * 1000
+        );
+        localStorage.removeItem("token");
+        localStorage.removeItem("time");
+        window.location = "/";
+      } else {
+        console.log(
+          "localstorage from searchbyemail false",
+          new Date().getTime() - time > hours * 60 * 60 * 1000
+        );
+
+        await axios
+          .post("/listbyemail", report, {
+            headers: {
+              "x-auth-token": jwt,
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          })
+          .then(res => {
+            setData(res.data);
+          })
+          .catch(err => {
+            
+          });
       }
-      else{
-        console.log( "localstorage from searchbyemail false", new Date().getTime() - time> hours * 60 * 60 *1000 );
-        
-      
 
-      await axios
-        .post("/listbyemail", report, {
-          headers: {
-            "x-auth-token":
-              jwt,
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {
-          setData(res.data);
-        })
-        .catch(err => {
-          setListError(true);
-        });
+      return () => {
+        fetchdata();
+      };
     };
-
-    return ()=> {
-      fetchdata();
-    }
-
-  }
 
     fetchdata();
   }, [idfrombutton]);
@@ -65,33 +61,37 @@ const SearchbyEmail = () => {
     setReport({ ...report, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = e => {
-    setidfrombutton(report);
+
+  const handleClick = () => {
+    setidfrombutton(report.patientemail);
   };
 
-  const handleClick =() => {
-    setidfrombutton(report.patientemail);
-}
-
   return (
-    <div className="App">
+    <div >
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter email"
+            name="patientemail"
+            onChange={handleChange}
+            value={report.patientemail}
+            required
+          />
+        </Form.Group>
+        
+      </Form>
+
       
-            <input
-              type="text"
-              name="patientemail"
-              value={report.patientemail}
-              onChange={handleChange}
-              required
-            />
-            <div className="input-field">
-              <button className="btn" type="submit" onClick={handleClick}>
-                Search
-              </button>
-            </div>
-          
-      {data.length !== 0  ? (
+      <div className="input-field">
+        <button className="btn btn-primary" type="submit" onClick={handleClick}>
+          Search
+        </button>
+      </div>
+
+      {data.length !== 0 ? (
         <div className="justify-content-center p-3 ">
-          
           <table className="table">
             <thead>
               <tr>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+
 import jwtDecode from 'jwt-decode';
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
@@ -7,9 +7,9 @@ import Button from 'react-bootstrap/Button'
 
 const Profile= () => { 
 
-  const [data,setData]= useState([]);
+  
   const[message, setMessage]= useState("Loading");
-  const [listError, setListError] = useState(false);
+  
   const [user, setUser] = useState('');
 
   useEffect( ()=> {
@@ -23,7 +23,7 @@ const Profile= () => {
       const time= localStorage.getItem("time");
 
       
-      if(jwt == undefined){
+      if(jwt === undefined){
         setMessage("Not Authorised");
       }
 

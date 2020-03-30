@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const Addtips = () => {
-  const [tips, setTip] = useState( {
+  const [tips, setTip] = useState({
     tip: ""
   });
   const [message, setMessage] = useState(null);
@@ -17,7 +17,7 @@ const Addtips = () => {
       const jwt = localStorage.getItem("token");
       const time = localStorage.getItem("time");
 
-      if (jwt == undefined) {
+      if (jwt === undefined) {
         setMessage("Not Authorised");
       }
 
@@ -67,27 +67,25 @@ const Addtips = () => {
   const submitAnother = e => {
     setMessage(null);
     setSubmit(null);
-    setTip( { tip: ""})
+    setTip({ tip: "" });
   };
 
   return (
-    <div>
+    <div className="d-flex justify-content-center">
       {message === null && submit === null ? (
         <div>
           <div className="d-flex p-4">
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Tip</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="tip"
+              
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label> Tip</Form.Label>
+                <Form.Control as="textarea" rows="3" name="tip"
                   placeholder="tip"
                   value={tips.tip}
-                  onChange={handleChange}
-                />
+                  onChange={handleChange} />
               </Form.Group>
 
-              <Button variant="primary" type="submit">
+              <Button className="center" variant="primary" type="submit">
                 Submit
               </Button>
             </Form>
@@ -103,7 +101,6 @@ const Addtips = () => {
           </Form>
         </div>
       )}
-      
     </div>
   );
 };
