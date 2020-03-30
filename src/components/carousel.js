@@ -13,7 +13,7 @@ const handleSelect = (selectedIndex, e) => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1335&q=80"
+          src="https://images.pexels.com/photos/3082452/pexels-photo-3082452.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -24,7 +24,7 @@ const handleSelect = (selectedIndex, e) => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+          src="https://images.pexels.com/photos/1028599/pexels-photo-1028599.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
           alt="Second slide"
         />
 

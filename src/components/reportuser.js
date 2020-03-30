@@ -66,7 +66,7 @@ const ReportUser = () => {
       })
       .then(function(response) {
         
-        setMessage("Submmited");
+        setMessage("Thanks! See you tomorrow");
         setSubmit(true);
         console.log(response.data.date);
       })
