@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import axios from 'axios';
+import Joi from "joi-browser";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Jumbotron from 'react-bootstrap/Jumbotron'
@@ -14,8 +15,30 @@ function Login() {
   //store input field data, user name and password
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [login, setLogin] = useState({
+    username: "",
+    password: "",
+  });
+  const[error,setError]= useState({});
+
+  const handleChange = event => {
+  
+
+    setLogin({
+      ...login,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  //for validation
+  const schema= {
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+  };
+
+
   const [user, setUser] = useState('');
-  const apiUrl = "http://localhost:5000/login";
+  const apiUrl = "https://tryingagain12.herokuapp.com/login";
 
   useEffect( ()=> {
     try{
@@ -24,14 +47,14 @@ function Login() {
     const time= localStorage.getItem('time');
 
     if(jwt && (new Date().getTime() - time> hours * 60 * 60 *1000 )){
-      console.log( "localstorage", new Date().getTime() - time> hours * 60 * 60 *1000 );
+      
       localStorage.clear();
     }
     else{
     
     const user= jwtDecode(jwt);
     setUser( {user});
-    console.log("user afted logged in", user);
+    
 
     }
   }
@@ -39,16 +62,20 @@ function Login() {
 
     }
   },[screen]);
+
+
+  
+
+ 
   //send username and password to the server
   // for initial authentication
   const auth = async () => {
-    console.log('calling auth')
-    console.log(username)
-    console.log(password)
+    console.log("pressd here");
     try {
       
       const loginData = { username, password  }
-      const res = await axios.post(apiUrl, loginData);
+      const res = await axios.post(apiUrl, login);
+      console.log(res);
       //process the response
       if (res.data.screen !== undefined) {
         localStorage.setItem('token', res.headers['x-auth-token']);
@@ -74,13 +101,13 @@ function Login() {
           <Form>
   <Form.Group controlId="formBasicEmail">
     <Form.Label>Email address</Form.Label>
-    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} />
+    <Form.Control type="email" name= "username" placeholder="Enter email" onChange={handleChange} error={error} />
     
   </Form.Group>
 
   <Form.Group controlId="formBasicPassword">
     <Form.Label>Password</Form.Label>
-    <Form.Control type="password" placeholder="Password"  onChange={e => setPassword(e.target.value)}/>
+    <Form.Control type="password" name= "password" placeholder="Password"  onChange={handleChange}/>
   </Form.Group>
   
   <Button variant="primary"  type="submit" onClick={auth}>
@@ -99,11 +126,11 @@ function Login() {
     This is a simple hero unit, a simple jumbotron-style component for calling
     extra attention to featured content or information.
   </p>
-  <p>
+  
     <form>
-    <Button variant="primary" onClick={{}}>Learn more</Button>
+    <Button variant="primary">Learn more</Button>
     </form>
-  </p>
+  
 </Jumbotron>
           
           
