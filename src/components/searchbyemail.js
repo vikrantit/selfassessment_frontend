@@ -28,10 +28,9 @@ const SearchbyEmail = () => {
         localStorage.removeItem("time");
         window.location = "/";
       } else {
-        console.log(
-          "localstorage from searchbyemail false",
-          new Date().getTime() - time > hours * 60 * 60 * 1000
-        );
+        //console.log("localstorage from searchbyemail false",
+          //new Date().getTime() - time > hours * 60 * 60 * 1000
+        //);
 
         await axios
           .post("/listbyemail", report, {

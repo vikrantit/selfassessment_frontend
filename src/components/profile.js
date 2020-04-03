@@ -28,22 +28,22 @@ const Profile= () => {
       }
 
       if(time && (new Date().getTime() - time > hours * 60 * 60 *1000 )){
-        console.log( "localstorage for true", new Date().getTime() - time> hours * 60 * 60 *1000 );
+        //console.log( "localstorage for true", new Date().getTime() - time> hours * 60 * 60 *1000 );
         localStorage.removeItem('token');
         localStorage.removeItem('time');
         window.location="/";
       }
       else{
         const user12= jwtDecode(jwt);
-        console.log("from profile page", user12);
+       // console.log("from profile page", user12);
         setUser( {user12});
-        console.log( "localstorage for false", new Date().getTime() - time> hours * 60 * 60 *1000 );
+        //console.log( "localstorage for false", new Date().getTime() - time> hours * 60 * 60 *1000 );
         };
   }
 
     fetchdata();
     setMessage("Loaded");
-    console.log("message here" ,message);
+   // console.log("message here" ,message);
   },[message]);
 
 

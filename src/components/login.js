@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import axios from 'axios';
-import Joi from "joi-browser";
+//import Joi from "joi-browser";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Jumbotron from 'react-bootstrap/Jumbotron'
@@ -13,13 +13,13 @@ function Login() {
 
   
   //store input field data, user name and password
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  //const [username, setUsername] = useState();
+  //const [password, setPassword] = useState();
   const [login, setLogin] = useState({
     username: "",
     password: "",
   });
-  const[error,setError]= useState({});
+  //const[error,setError]= useState({});
 
   const handleChange = event => {
   
@@ -28,12 +28,6 @@ function Login() {
       ...login,
       [event.target.name]: event.target.value
     });
-  };
-
-  //for validation
-  const schema= {
-    email: Joi.string().email().required(),
-    password: Joi.string().required()
   };
 
 
@@ -73,7 +67,7 @@ function Login() {
     console.log("pressd here");
     try {
       
-      const loginData = { username, password  }
+      //const loginData = { username, password  }
       const res = await axios.post(apiUrl, login);
       console.log(res);
       //process the response
@@ -101,7 +95,7 @@ function Login() {
           <Form>
   <Form.Group controlId="formBasicEmail">
     <Form.Label>Email address</Form.Label>
-    <Form.Control type="email" name= "username" placeholder="Enter email" onChange={handleChange} error={error} />
+    <Form.Control type="email" name= "username" placeholder="Enter email" onChange={handleChange}  />
     
   </Form.Group>
 

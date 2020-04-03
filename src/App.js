@@ -16,7 +16,6 @@ import Emergency from "./components/emergency";
 import Addtips from "./components/addtips";
 import Carousel1 from './components/carousel';
 import Footer from './components/footer';
-import activityWatcher from "./components/inactivity";
 
 
 
@@ -26,7 +25,7 @@ function App() {
   //activityWatcher();
   
 
-function activityWatcher(){
+/*function activityWatcher(){
  
   //The number of seconds that have passed
   //since the user was active.
@@ -39,12 +38,12 @@ function activityWatcher(){
   //every second. 1000 milliseconds = 1 second.
   setInterval(function(){
       secondsSinceLastActivity++;
-      console.log(secondsSinceLastActivity + ' seconds since the user was last active');
+      //console.log(secondsSinceLastActivity + ' seconds since the user was last active');
       //if the user has been inactive or idle for longer
       //then the seconds specified in maxInactivity
       return secondsSinceLastActivity;
       if(secondsSinceLastActivity > maxInactivity){
-          console.log('User has been inactive for more than ' + maxInactivity + ' seconds');
+          //console.log('User has been inactive for more than ' + maxInactivity + ' seconds');
           //Redirect them to your logout.php page.
           //location.href = 'logout.php';
       }
@@ -71,7 +70,7 @@ function activityWatcher(){
   });
   
 }
-//activityWatcher();
+activityWatcher();*/
 
   ////////////////////////////////
 

@@ -94,7 +94,7 @@ const ReportNurse = () => {
             
             <Form onSubmit={handleSubmit}>
             <h3>Add Report</h3>
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group controlId="formBasiEmail">
                 <Form.Label>Patient Id</Form.Label>
                 <Form.Control
                   type="text"
@@ -116,7 +116,7 @@ const ReportNurse = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicInput">
+              <Form.Group controlId="formBasiccInput">
                 <Form.Label>Body Temperature</Form.Label>
                 <Form.Control
                   type="text"
@@ -138,7 +138,7 @@ const ReportNurse = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicPassword">
+              <Form.Group controlId="formBasiccPassword">
                 <Form.Label>Blood Pressure</Form.Label>
                 <Form.Control
                   type="text"
@@ -149,7 +149,7 @@ const ReportNurse = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group controlId="formBasicccEmail">
                 <Form.Label>Respiratory Rate</Form.Label>
                 <Form.Control
                   type="text"
