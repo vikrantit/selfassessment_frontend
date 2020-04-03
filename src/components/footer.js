@@ -6,11 +6,11 @@ function Footer(){
 
   return (
     <Card className="text-center">
-  <Card.Header>Footer</Card.Header>
+  <Card.Header>Self Assessment</Card.Header>
   <Card.Body>
-    <Card.Title>Footer</Card.Title>
+    <Card.Title>Self Assessment</Card.Title>
     <Card.Text>
-     Thanks for Visit
+    Copyright © 2020 Emerging Technologies Inc
     </Card.Text>
     
   </Card.Body>
