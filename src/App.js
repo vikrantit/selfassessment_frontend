@@ -83,7 +83,7 @@ activityWatcher();*/
   useEffect( ()=> {
 
     const fetchdata= async () => {
-      await axios.get('/getTips')
+      await axios.get('https://tryingagain12.herokuapp.com/getTips')
       .then( res=> {
         setMessage(res.data);
       })
