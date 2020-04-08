@@ -43,6 +43,7 @@ function Login() {
     if(jwt && (new Date().getTime() - time> hours * 60 * 60 *1000 )){
       
       localStorage.clear();
+      setLogin(...login,null);
     }
     else{
     
