@@ -22,7 +22,7 @@ const Registration = () => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("/register", registeruser)
+      .post("https://tryingagain12.herokuapp.comregister", registeruser)
       .then(function(response) {
         console.log(response);
         localStorage.setItem("token", response.headers["x-auth-token"]);

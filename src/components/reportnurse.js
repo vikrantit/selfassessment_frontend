@@ -57,7 +57,7 @@ const ReportNurse = () => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("/reportnurse", report, {
+      .post("https://tryingagain12.herokuapp.com/reportnurse", report, {
         headers: {
           "x-auth-token": user,
           Accept: "application/json",

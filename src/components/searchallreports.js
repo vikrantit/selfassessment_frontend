@@ -35,7 +35,7 @@ const SearchAllreports = () =>{
       
 
 
-      await axios.get('/listallreports' ,{ headers: {'x-auth-token' :jwt,
+      await axios.get('https://tryingagain12.herokuapp.com/listallreports' ,{ headers: {'x-auth-token' :jwt,
       'Accept' : 'application/json',
       'Content-Type': 'application/json'
        }})

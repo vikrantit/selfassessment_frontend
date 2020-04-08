@@ -48,7 +48,7 @@ const Addtips = () => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("/addTips", tips, {
+      .post("https://tryingagain12.herokuapp.com/addTips", tips, {
         headers: {
           "x-auth-token": user,
           Accept: "application/json",
