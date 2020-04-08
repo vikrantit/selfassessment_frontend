@@ -17,6 +17,8 @@ import Addtips from "./components/addtips";
 import Carousel1 from './components/carousel';
 import Footer from './components/footer';
 
+import LoginTrial from "./components/logintrial";
+
 
 
 function App() {
@@ -119,7 +121,8 @@ activityWatcher();*/
         <div className="p-4">
         
         <Switch>
-          <Route path="/login" component={Login}></Route>
+          <Route path="/logintrial" component={LoginTrial}></Route>
+          <Route path="/logintrial" component={LoginTrial}></Route>
           <Route path="/logout" component={Logout}></Route>
           <Route path="/profile" component={Profile}></Route>
           <Route path="/registration" component={Registration}></Route>
@@ -129,7 +132,7 @@ activityWatcher();*/
           <Route path="/reportuser" component={ReportUser}></Route>
           <Route path="/emergency" component={Emergency}></Route>
           <Route path="/addTips" component={Addtips}></Route>
-          <Redirect from="/" to="/login" />
+          <Redirect from="/" to="/logintrial" />
           <Redirect to="" />
         </Switch>
         </div>
