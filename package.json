@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage": "https://myusername.github.io/my-app",
+  
   "proxy": "https://tryingagain12.herokuapp.com/",
   "eslintConfig": {
     "extends": "react-app"
