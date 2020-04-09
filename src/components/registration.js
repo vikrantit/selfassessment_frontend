@@ -1,84 +1,162 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
-const Registration = () => {
-  const [registeruser, setRegisteruser] = useState({
+const Signup = () => {
+  const [values, setValues] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    confirmpassword: ""
+    confirmpassword: "",
+    error: "",
+    success: false,
   });
 
-  const handleChange = event => {
-    setRegisteruser({
-      ...registeruser,
-      [event.target.name]: event.target.value
-    });
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmpassword,
+    error,
+    success,
+  } = values;
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const onSubmit = (event) => {
+    event.preventDefault();
     axios
-      .post("https://tryingagain12.herokuapp.com/register", registeruser)
-      .then(function(response) {
-        console.log(response);
-        localStorage.setItem("token", response.headers["x-auth-token"]);
-        localStorage.setItem('time', new Date().getTime());
-        window.location = "/";
+      .post(`https://tryingagain12.herokuapp.com/register`, {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmpassword,
       })
-      .catch(function(error) {
-        console.log(error);
+      .then((res) => {
+        if (res.data.err) {
+          console.log("here", res.data.err);
+          setValues({ ...values, error: res.data.err, success: false });
+        } else {
+          console.log("register working");
+
+          setValues({
+            ...values,
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmpassword: "",
+            success: true,
+          });
+          console.log(res);
+          localStorage.setItem("token", res.headers["x-auth-token"]);
+          localStorage.setItem("time", new Date().getTime());
+          window.location = "/";
+        }
+      })
+
+      .catch((err) => {
+        console.log(err);
+        console.log("here in catch block");
+        setValues({ ...values, error: err, success: false });
+        console.log(err);
       });
   };
 
+  const successMessage = () => {
+    return (
+      <div
+        className="alert alert-success"
+        style={{ display: success ? "" : "none" }}
+      >
+        New account was created successfully.
+        <Link to="/login">Welcome</Link>
+      </div>
+    );
+  };
+  const errorMessage = () => {
+    return (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        {JSON.stringify(error)}
+        <Link to="/registration">Register Again</Link>
+      </div>
+    );
+  };
+
+  const signUpForm = () => {
+    return (
+      <div className="row">
+        <div className="col-md-6 offset-sm-3 text-left">
+          <form>
+            <div className="form-group">
+              <label className="text-dark">First Name</label>
+              <input
+                className="form-control"
+                onChange={handleChange("firstName")}
+                type="text"
+                value={firstName}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Last Name</label>
+              <input
+                className="form-control"
+                onChange={handleChange("lastName")}
+                type="text"
+                value={lastName}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Email</label>
+              <input
+                className="form-control"
+                onChange={handleChange("email")}
+                type="text"
+                value={email}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Password</label>
+              <input
+                className="form-control"
+                onChange={handleChange("password")}
+                type="text"
+                value={password}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Confirm Password</label>
+              <input
+                className="form-control"
+                onChange={handleChange("confirmpassword")}
+                type="text"
+                value={confirmpassword}
+              />
+            </div>
+            <button onClick={onSubmit} className="btn btn-primary btn-block">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className= "d-flex justify-content-center">
-      <Form onSubmit={handleSubmit}> 
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control type="text" name="firstName" placeholder="Enter first name"  value={registeruser.firstName}
-          onChange={handleChange} />
-          
-        </Form.Group>
-
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control type="text"  name="lastName" placeholder="Enter last name"  value={registeruser.lastName}
-          onChange={handleChange} />
-          
-        </Form.Group>
-
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" name="email" placeholder="Enter email"  value={registeruser.email}
-          onChange={handleChange} />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder="Password" value={registeruser.password}
-          onChange={handleChange} />
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" name="confirmpassword" placeholder="Confirm Password" value={registeruser.confirmpassword}
-          onChange={handleChange} />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-
-      
+    <div>
+      {signUpForm()}
+      {successMessage()}
+      {errorMessage()}
     </div>
   );
 };
 
-export default Registration;
+export default Signup;
