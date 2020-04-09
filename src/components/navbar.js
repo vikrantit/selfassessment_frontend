@@ -72,6 +72,9 @@ const NavBar = ({ u }) => {
               </NavLink>
             </React.Fragment>
           )}
+          <NavLink className="nav-item nav-link" to="/team">
+                Team
+              </NavLink>
         </div>
       </div>
     </nav>
