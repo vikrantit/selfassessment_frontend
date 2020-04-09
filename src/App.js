@@ -127,6 +127,7 @@ activityWatcher();*/
           <Route path="/profile" component={Profile}></Route>
           <Route path="/registration" component={Registration}></Route>
           <Route path="/reportnurse" component={ReportNurse}></Route>
+          
           <Route path="/searchallreports" component={SearchAllreports}></Route>
           <Route path="/searchbyemail" component={SearchbyEmail}></Route>
           <Route path="/reportuser" component={ReportUser}></Route>
