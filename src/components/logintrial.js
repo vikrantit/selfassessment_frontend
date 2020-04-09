@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-
-
+import Jumbotron from "react-bootstrap/Jumbotron";
 
 const LoginTrial = () => {
   const [values, setValues] = useState({
@@ -13,8 +12,7 @@ const LoginTrial = () => {
     loading: false,
     didRedirect: false,
   });
-  const [user,setUser]= useState(null);
-
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     try {
@@ -23,10 +21,9 @@ const LoginTrial = () => {
       const time = localStorage.getItem("time");
 
       if (jwt && new Date().getTime() - time > hours * 60 * 60 * 1000) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('time');
-        window.location="/";
-        
+        localStorage.removeItem("token");
+        localStorage.removeItem("time");
+        window.location = "/";
       } else {
         const user = jwtDecode(jwt);
         setUser(user);
@@ -34,9 +31,7 @@ const LoginTrial = () => {
     } catch (ex) {}
   }, []);
 
-
   const { username, password, error, loading, didRedirect } = values;
- 
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
@@ -45,28 +40,26 @@ const LoginTrial = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: false, loading: true });
-    console.log("here")
-    axios.post(`http://localhost:5000/login`,{username, password})
-    
-    .then( res=> {
+    console.log("here");
+    axios
+      .post(`http://localhost:5000/login`, { username, password })
 
-      if(res.data.err){
-        console.log(res.data.err);
-        setValues({...values, error: res.data.err, loading: false})
-      }
-      else{
-        setValues({...values, didRedirect:true});
-        localStorage.setItem("token", res.headers["x-auth-token"]);
-        localStorage.setItem('time', new Date().getTime());
-         window.location = "/";
-        
-    }})
-  
-    .catch(err => {
-      setValues({ ...values, error: err, success: false });
-      console.log(err);
-    })
+      .then((res) => {
+        if (res.data.err) {
+          console.log(res.data.err);
+          setValues({ ...values, error: res.data.err, loading: false });
+        } else {
+          setValues({ ...values, didRedirect: true });
+          localStorage.setItem("token", res.headers["x-auth-token"]);
+          localStorage.setItem("time", new Date().getTime());
+          window.location = "/";
+        }
+      })
 
+      .catch((err) => {
+        setValues({ ...values, error: err, success: false });
+        console.log(err);
+      });
   };
 
   const successMessage = () => {
@@ -112,7 +105,7 @@ const LoginTrial = () => {
                 value={password}
                 onChange={handleChange("password")}
                 className="form-control"
-                type="text"
+                type="password"
               />
             </div>
 
@@ -125,17 +118,20 @@ const LoginTrial = () => {
     );
   };
   return (
-    
-      <div>
-      {user === null ? 
-      ( <div>{signInForm()}  {errorMessage()}</div> )
-      
-      : (
-      <div></div>
-      )
-      }
-      <p>{JSON.stringify(values)}</p>
-      </div>
+    <div>
+      {user === null ? (
+        <div>
+          {signInForm()} {errorMessage()}
+        </div>
+      ) : (
+        <div>
+         
+          <Jumbotron>
+            <p> Welcome {user.firstName} {user.lastName} </p>
+          </Jumbotron>
+        </div>
+      )}
+    </div>
   );
 };
 
