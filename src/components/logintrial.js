@@ -76,7 +76,7 @@ const LoginTrial = () => {
   const errorMessage = () => {
     return (
       <div
-        className="alert alert-danger"
+        className="alert alert-danger col-md-6 offset-sm-3 text-left"
         style={{ display: error ? "" : "none" }}
       >
         {JSON.stringify(error)}
@@ -121,7 +121,7 @@ const LoginTrial = () => {
     <div>
       {user === null ? (
         <div>
-          {signInForm()} {errorMessage()}
+          {signInForm()} <br></br>{errorMessage()}
         </div>
       ) : (
         <div>
