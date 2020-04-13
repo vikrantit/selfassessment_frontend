@@ -3,11 +3,13 @@ import axios from "axios";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import jwtDecode from "jwt-decode";
 
 const ReportNurse = () => {
   const [message, setMessage] = useState(null);
   const [submit, setSubmit] = useState(null);
   const [user, setUser] = useState("");
+
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -28,6 +30,11 @@ const ReportNurse = () => {
         localStorage.removeItem("time");
         window.location = "/";
       } else {
+        const user12 = jwtDecode(jwt);
+        if(user12.role==="Patient"){
+          window.location= "/";
+        }
+
         setUser(jwt);
         console.log(
           "localstorage for false",

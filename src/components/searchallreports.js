@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import jwtDecode from "jwt-decode";
 
 const SearchAllreports = () =>{
 
@@ -30,6 +31,15 @@ const SearchAllreports = () =>{
         window.location="/";
       }
       else{
+
+        const user12 = jwtDecode(jwt);
+        console.log(user12.role);
+        if(user12.role==="Patient"){
+          console.log("here");
+          window.location= "/";
+        }
+
+        
         console.log( "localstorage for false", new Date().getTime() - time> hours * 60 * 60 *1000 );
         
       
@@ -58,7 +68,7 @@ const SearchAllreports = () =>{
  
   return (
 
-    <div>
+    <div className="p-4">
       
       { data.length !== 0
         ? <div className="p-3">
@@ -87,8 +97,8 @@ const SearchAllreports = () =>{
       </tbody>
      </table>
           
-        </div>
-        : < div> <p> {message}...</p></div>
+        </div >
+        : < div className="p-4"> <p> {message}...</p></div>
       }
 
      

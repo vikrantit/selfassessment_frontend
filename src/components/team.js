@@ -3,11 +3,12 @@ import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
 import Figure from "react-bootstrap/Figure";
 import simerjit from "../images/simerjit.jpeg";
-import bhupinder from "../images/bhupinder.jpeg";
+import bhupinder from "../images/bhupi.bmp";
 import subhankar from "../images/subhankar.jpeg";
 import vikrant from "../images/vikrant.jpeg";
 import keshav from "../images/keshav.jpg";
 import bhupinder2 from "../images/bhupinder2.jpg";
+import jerry from "../images/jerry.jpeg";
 
 const Team = () => {
   return (
@@ -78,7 +79,7 @@ const Team = () => {
             <Figure.Image
               width={300}
               height={200}
-              alt="200X150"
+              alt="300X200"
               src={bhupinder2}
             />
             <Card.Body>
@@ -90,10 +91,10 @@ const Team = () => {
         <div className="col-sm">
           <Card style={{ width: "18rem" }}>
             <Figure.Image
-              width={171}
-              height={180}
-              alt="171x180"
-              src="holder.js/171x180"
+              width={300}
+              height={200}
+              alt="300X200"
+              src={jerry}
             />
             <Card.Body>
               <Card.Title>Jerry</Card.Title>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
+import jwtDecode from "jwt-decode";
 
 const SearchbyEmail = () => {
   const [report, setReport] = useState({ patientemail: "" });
@@ -28,6 +29,12 @@ const SearchbyEmail = () => {
         localStorage.removeItem("time");
         window.location = "/";
       } else {
+        const user12 = jwtDecode(jwt);
+        console.log(user12.role);
+        if(user12.role==="Patient"){
+          console.log("here");
+          window.location= "/";
+        }
         //console.log("localstorage from searchbyemail false",
           //new Date().getTime() - time > hours * 60 * 60 * 1000
         //);

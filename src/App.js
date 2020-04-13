@@ -62,11 +62,11 @@ function App() {
       <Navbar u={user}/>
 
       
-      <p><i><marquee>Tips of the Day: {message}</marquee> </i></p>
+      <p className="text-secondary"><i><marquee>Tips of the Day: {message}</marquee> </i></p>
         <div className="">
         
         <Switch>
-          <Route path="/logintrial" component={LoginTrial}></Route>
+          <Route path="/login" component={LoginTrial}></Route>
           <Route path="/logout" component={Logout}></Route>
           <Route path="/profile" component={Profile}></Route>
           <Route path="/registration" component={Registration}></Route>
@@ -78,7 +78,7 @@ function App() {
           <Route path="/reportuser" component={ReportUser}></Route>
           <Route path="/emergency" component={Emergency}></Route>
           <Route path="/addTips" component={Addtips}></Route>
-          <Redirect from="/" to="/logintrial" />
+          <Redirect from="/" to="/login" />
           <Redirect to="" />
         </Switch>
         </div>
