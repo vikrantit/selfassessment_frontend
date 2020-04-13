@@ -36,7 +36,7 @@ const Addtips = () => {
           window.location= "/";
         }
 
-        
+
         setUser(jwt);
         console.log(
           "localstorage for false",
@@ -101,7 +101,7 @@ const Addtips = () => {
       ) : (
         <div className="d-flex p-4">
           <Form onSubmit={submitAnother}>
-            <p> {message}...</p>
+            <p className="text-success"> {message}...</p>
             <Button variant="primary" type="submit">
               Submit Another
             </Button>

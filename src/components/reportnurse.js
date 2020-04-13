@@ -97,7 +97,7 @@ const ReportNurse = () => {
     <div>
       {message === null && submit === null ? (
         <div>
-          <div className="d-flex p-4">
+          <div className="d-flex justify-content-center">
             
             <Form onSubmit={handleSubmit}>
             <h3>Add Report</h3>
@@ -173,13 +173,14 @@ const ReportNurse = () => {
           </div>
         </div>
       ) : (
-        <div className="d-flex p-4">
+        <div className="d-flex justify-content-center">
           <Form onSubmit={submitAnother}>
             <p> {message}...</p>
             <Button variant="primary" type="submit">
                 Submit Another
               </Button>
           </Form>
+          <br></br>
         </div>
       )}
     </div>
