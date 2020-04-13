@@ -66,7 +66,7 @@ const SearchbyEmail = () => {
   };
 
   return (
-    <div >
+    <div className="p-4" >
       <Form>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

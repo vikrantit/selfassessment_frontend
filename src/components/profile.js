@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import jwtDecode from 'jwt-decode';
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
+import Carousel1 from '../components/carousel';
 
 
 const Profile= () => { 
@@ -49,6 +50,7 @@ const Profile= () => {
 
 return(
   <div>
+    <Carousel1 />
     <Jumbotron>
   <h1>Hello, {user.role}!</h1>
   <p>

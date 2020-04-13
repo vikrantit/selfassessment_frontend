@@ -60,10 +60,10 @@ function App() {
     <React.Fragment>
       
       <Navbar u={user}/>
-      <Carousel1 />
+
       
       <p><i><marquee>Tips of the Day: {message}</marquee> </i></p>
-        <div className="p-4">
+        <div className="">
         
         <Switch>
           <Route path="/logintrial" component={LoginTrial}></Route>
@@ -82,6 +82,14 @@ function App() {
           <Redirect to="" />
         </Switch>
         </div>
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  chat-icon="04bb112b-d7c0-471f-a3c9-4f5c365af2e7_x.png"
+  intent="WELCOME"
+  chat-title="Mary"
+  agent-id="d0cb6462-2ad5-4b8f-84e2-bc21528cc381"
+  language-code="en"
+></df-messenger>
         <Footer />
     </React.Fragment>
   );
