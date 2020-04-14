@@ -1,47 +1,162 @@
-import React, { useState,useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-const Registration= () => {
+const Signup = () => {
+  const [values, setValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmpassword: "",
+    error: "",
+    success: false,
+  });
 
-  const [registeruser, setRegisteruser] = useState( {firstName: '', lastName: '', email: '', password: '', confirmpassword: ''})
-  const [email, setEmail]= useState();
-  const [password, setPassword]= useState();
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmpassword,
+    error,
+    success,
+  } = values;
 
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+  };
 
-  const handleChange = (event) => {
-    setRegisteruser({...registeruser, [event.target.name]: event.target.value})
-}
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('/register', registeruser)
-      .then(function (response) {
-          console.log(response)
+  const onSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post(`https://tryingagain12.herokuapp.com/register`, {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmpassword,
       })
-      .catch(function (error) {
-          console.log(error)
-      }) 
-    }
+      .then((res) => {
+        if (res.data.err) {
+          console.log("here", res.data.err);
+          setValues({ ...values, error: res.data.err, success: false });
+        } else {
+          console.log("register working");
+
+          setValues({
+            ...values,
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmpassword: "",
+            success: true,
+          });
+          console.log(res);
+          localStorage.setItem("token", res.headers["x-auth-token"]);
+          localStorage.setItem("time", new Date().getTime());
+          window.location = "/";
+        }
+      })
+
+      .catch((err) => {
+        console.log(err);
+        console.log("here in catch block");
+        setValues({ ...values, error: err, success: false });
+        console.log(err);
+      });
+  };
+
+  const successMessage = () => {
+    return (
+      <div
+        className="alert alert-success"
+        style={{ display: success ? "" : "none" }}
+      >
+        New account was created successfully.
+        <Link to="/login">Welcome</Link>
+      </div>
+    );
+  };
+  const errorMessage = () => {
+    return (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        {JSON.stringify(error)}
+        <Link to="/registration">Register Again</Link>
+      </div>
+    );
+  };
+
+  const signUpForm = () => {
+    return (
+      <div className="row">
+        <div className="col-md-6 offset-sm-3 text-left">
+          <form>
+            <div className="form-group">
+              <label className="text-dark">First Name</label>
+              <input
+                className="form-control"
+                onChange={handleChange("firstName")}
+                type="text"
+                value={firstName}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Last Name</label>
+              <input
+                className="form-control"
+                onChange={handleChange("lastName")}
+                type="text"
+                value={lastName}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Email</label>
+              <input
+                className="form-control"
+                onChange={handleChange("email")}
+                type="text"
+                value={email}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Password</label>
+              <input
+                className="form-control"
+                onChange={handleChange("password")}
+                type="text"
+                value={password}
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-dark">Confirm Password</label>
+              <input
+                className="form-control"
+                onChange={handleChange("confirmpassword")}
+                type="text"
+                value={confirmpassword}
+              />
+            </div>
+            <button onClick={onSubmit} className="btn btn-primary btn-block">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
 
   return (
-
     <div>
-  
-      <form className='white' onSubmit={handleSubmit}>
-      <input type="text" name="firstName" value={registeruser.firstName} onChange={handleChange} required />
-      <input type="text" name="lastName" value={registeruser.lastName} onChange={handleChange} required />
-      <input type="text" name="email" value={registeruser.email} onChange={handleChange} required />
-      <input type="text" name="password" value={registeruser.password} onChange={handleChange} required />
-      <input type="text" name="confirmpassword" value={registeruser.confirmpassword} onChange={handleChange} required />
+      {signUpForm()}
+      {successMessage()}
+      {errorMessage()}
+    </div>
+  );
+};
 
-      <div className="input-field"> 
-       <button className="btn blue darken-3" type="submit">Sign Up</button>
-       </div>
-      </form>
-      
-  </div> 
-  )
-}
-
-
-export default Registration;
+export default Signup;

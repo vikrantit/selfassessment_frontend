@@ -3,13 +3,26 @@ import axios from "axios";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import jwtDecode from "jwt-decode";
 
-const ReportNurse = () => {
+const ReportUser = () => {
+ 
+  
   const [message, setMessage] = useState(null);
   const [submit, setSubmit] = useState(null);
   const [user, setUser] = useState("");
 
+  const [report, setReport] = useState({
+    
+    pulserate: "",
+    bodytemperature: "",
+    weight: "",
+    bloodpressure: "",
+    respiratoryrate: ""
+  });
+
+  const handleChange = event => {
+    setReport({ ...report, [event.target.name]: event.target.value });
+  };
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -30,11 +43,6 @@ const ReportNurse = () => {
         localStorage.removeItem("time");
         window.location = "/";
       } else {
-        const user12 = jwtDecode(jwt);
-        if(user12.role==="Patient"){
-          window.location= "/";
-        }
-
         setUser(jwt);
         console.log(
           "localstorage for false",
@@ -46,25 +54,10 @@ const ReportNurse = () => {
     fetchdata();
   }, []);
 
-  
-  
-  const [report, setReport] = useState({
-    patientid: "",
-    patientemail: "",
-    bodytemperature: "",
-    heartrate: "",
-    bloodpressure: "",
-    respiratoryrate: ""
-  });
-
-  const handleChange = event => {
-    setReport({ ...report, [event.target.name]: event.target.value });
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("https://tryingagain12.herokuapp.com/reportnurse", report, {
+      .post("https://tryingagain12.herokuapp.com/reportuser", report, {
         headers: {
           "x-auth-token": user,
           Accept: "application/json",
@@ -72,8 +65,8 @@ const ReportNurse = () => {
         }
       })
       .then(function(response) {
-       
-        setMessage("Submmited");
+        
+        setMessage("Thanks! See you tomorrow");
         setSubmit(true);
         console.log(response.data.date);
       })
@@ -83,14 +76,16 @@ const ReportNurse = () => {
   };
 
   const submitAnother = e => {
-      setMessage(null);
-      setSubmit(null);
-      setReport({ patientid: "",
-      patientemail: "",
+    setMessage(null);
+    setSubmit(null);
+    setReport({
+     
+      pulserate: "",
       bodytemperature: "",
-      heartrate: "",
+      weight: "",
       bloodpressure: "",
-      respiratoryrate: ""} )
+      respiratoryrate: ""
+    });
   };
 
   return (
@@ -98,32 +93,21 @@ const ReportNurse = () => {
       {message === null && submit === null ? (
         <div>
           <div className="d-flex justify-content-center">
-            
             <Form onSubmit={handleSubmit}>
-            <h3>Add Report</h3>
-              <Form.Group controlId="formBasiEmail">
-                <Form.Label>Patient Id</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="patientid"
-                  value={report.patientid}
-                  placeholder="Enter patient id"
-                  onChange={handleChange}
-                />
-              </Form.Group>
+              <h3>Add Report</h3>
 
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>Patient Email</Form.Label>
+                <Form.Label>Pulse Rate</Form.Label>
                 <Form.Control
-                  type="email"
-                  name="patientemail"
-                  value={report.patientemail}
-                  placeholder="Enter patient email"
+                  type="text"
+                  name="pulserate"
+                  value={report.pulserate}
+                  placeholder="Enter pulse rate"
                   onChange={handleChange}
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasiccInput">
+              <Form.Group controlId="formBasicInput">
                 <Form.Label>Body Temperature</Form.Label>
                 <Form.Control
                   type="text"
@@ -135,17 +119,17 @@ const ReportNurse = () => {
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
-                <Form.Label>Heart Rate</Form.Label>
+                <Form.Label>Weight</Form.Label>
                 <Form.Control
                   type="text"
-                  name="heartrate"
-                  value={report.heartrate}
-                  placeholder="heartrate"
+                  name="weight"
+                  value={report.weight}
+                  placeholder="weight"
                   onChange={handleChange}
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasiccPassword">
+              <Form.Group controlId="formBasicPassword">
                 <Form.Label>Blood Pressure</Form.Label>
                 <Form.Control
                   type="text"
@@ -156,7 +140,7 @@ const ReportNurse = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicccEmail">
+              <Form.Group controlId="formBasicEmail">
                 <Form.Label>Respiratory Rate</Form.Label>
                 <Form.Control
                   type="text"
@@ -175,10 +159,10 @@ const ReportNurse = () => {
       ) : (
         <div className="d-flex justify-content-center">
           <Form onSubmit={submitAnother}>
-            <p> {message}...</p>
+            <p className="text-success"> {message}...</p>
             <Button variant="primary" type="submit">
-                Submit Another
-              </Button>
+              Submit Another
+            </Button>
           </Form>
           <br></br>
         </div>
@@ -187,4 +171,4 @@ const ReportNurse = () => {
   );
 };
 
-export default ReportNurse;
+export default ReportUser;

@@ -1,48 +1,63 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Form from "react-bootstrap/Form";
+import jwtDecode from "jwt-decode";
 
 const SearchbyEmail = () => {
-  const [token, setToken] = useState(null);
   const [report, setReport] = useState({ patientemail: "" });
   //modified part
-  const [idfrombutton, setidfrombutton] = useState('');
+  const [idfrombutton, setidfrombutton] = useState("");
   const [data, setData] = useState([]);
-  const [listError, setListError] = useState(false);
-  const [cookie, setCookie] = useState('');
-
-  useEffect(() => {
-    const fetchCookie = async () => {
-      const cookieurl= await axios
-        .get("/read_cookie")
-        .then(res => {
-          setCookie(res.data);
-
-        })
-        .catch(err => {
-          setListError(true);
-        });
-    };
-
-    fetchCookie();
-  }, []);
+  
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchdata = async () => {
-      await axios
-        .post("/listbyemail", report, {
-          headers: {
-            "x-auth-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4MTg2NzY5MjRjODZhMmNiYTAyYjUiLCJmaXJzdG5hbWUiOiJTdWJoIiwiaWF0IjoxNTg0OTg0NjkzfQ.xtms8es4kDYMSXvR8_4AyPU0D_xXvZ3wxG16GGbylx0",
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {
-          setData(res.data);
-        })
-        .catch(err => {
-          setListError(true);
-        });
+      const jwt = localStorage.getItem("token");
+      const time = localStorage.getItem("time");
+      let hours = 0.05;
+
+      if (jwt === undefined) {
+        setMessage("Not Authorised");
+      }
+      if (time && new Date().getTime() - time > hours * 60 * 60 * 1000) {
+        console.log(
+          "localstorage from searchbyemail true",
+          new Date().getTime() - time > hours * 60 * 60 * 1000
+        );
+        localStorage.removeItem("token");
+        localStorage.removeItem("time");
+        window.location = "/";
+      } else {
+        const user12 = jwtDecode(jwt);
+        console.log(user12.role);
+        if(user12.role==="Patient"){
+          console.log("here");
+          window.location= "/";
+        }
+        //console.log("localstorage from searchbyemail false",
+          //new Date().getTime() - time > hours * 60 * 60 * 1000
+        //);
+
+        await axios
+          .post("https://tryingagain12.herokuapp.com/listbyemail", report, {
+            headers: {
+              "x-auth-token": jwt,
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          })
+          .then(res => {
+            setData(res.data);
+          })
+          .catch(err => {
+            
+          });
+      }
+
+      return () => {
+        fetchdata();
+      };
     };
 
     fetchdata();
@@ -52,33 +67,37 @@ const SearchbyEmail = () => {
     setReport({ ...report, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = e => {
-    setidfrombutton(report);
+
+  const handleClick = () => {
+    setidfrombutton(report.patientemail);
   };
 
-  const handleClick =() => {
-    setidfrombutton(report.patientemail);
-}
-
   return (
-    <div>
+    <div className="p-4" >
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter email"
+            name="patientemail"
+            onChange={handleChange}
+            value={report.patientemail}
+            required
+          />
+        </Form.Group>
+        
+      </Form>
+
       
-            <input
-              type="text"
-              name="patientemail"
-              value={report.patientemail}
-              onChange={handleChange}
-              required
-            />
-            <div className="input-field">
-              <button className="btn" type="submit" onClick={handleClick}>
-                Search
-              </button>
-            </div>
-          
-      {data.length !== 0  ? (
+      <div className="input-field">
+        <button className="btn btn-primary" type="submit" onClick={handleClick}>
+          Search
+        </button>
+      </div>
+
+      {data.length !== 0 ? (
         <div className="justify-content-center p-3 ">
-          
           <table className="table">
             <thead>
               <tr>
@@ -107,7 +126,7 @@ const SearchbyEmail = () => {
       ) : (
         <div className="d-flex justify-content-center p-3 ">
           {" "}
-          <p>You need to Login First</p>
+          <p>{message}...</p>
         </div>
       )}
     </div>
